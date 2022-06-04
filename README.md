@@ -1,4 +1,4 @@
 # AtlasChess
-A simple Javascript chess AI using the [Chess.js](https://github.com/jhlywa/chess.js) and [chessboard.js](https://github.com/oakmac/chessboardjs) libraries
+Um jogador de Xadrez feito com Javascript usando as bibliotecas [Chess.js](https://github.com/jhlywa/chess.js) e [chessboard.js](https://github.com/oakmac/chessboardjs)
 
-[Play against it](http://www.felipeanibal.com/ptbr/chess)
+[Jogar contra!](http://www.felipeanibal.com/ptbr/chess)
