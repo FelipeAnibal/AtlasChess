@@ -9,6 +9,13 @@
     <!-- Chessboard css -->
     <link rel="stylesheet" href="../chessboardjs/lib/chessboard.css">
 
+    <link rel="stylesheet" href="./css/stylesheet.css">
+
+    <!-- Link to Montserrat Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    
     <!-- Bootstrap css -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
@@ -31,36 +38,23 @@
 </head>
 
 <body>
-    <div class="container mb-5">
-        <h1 class="text-center mt-4 mb-5">Atlas</h1>
-        <div class="row justify-content-center">
-            <div class="col-6">
-                <div class="row justify-content-center">
-                    <div class="col-md-6 text-center">
-                        <p id="chat" class="align-middle"> As peças brancas começam! </p>
-                    </div>
-                    <!-- <div class="col-md-6 text-center">
-                        <p id="speed" class="align-middle"></p>
-                    </div> -->
-                </div>
+    <div class="container mb-3">
+        <div class="row mt-5 justify-content-center">
+            <div class="col-md-6 mt-4">
                 <div class="row justify-content-center">
                     <div class="col-md-12 mb-2">
                         <div id="board" style="width: 100%"></div>
                     </div>
                 </div>
-                <div class="row justify-content-center">
-                    <div class="col-md-6 text-center">
-                        <p id="status"></p>
-                    </div>
-                    <div class="col-md-6 text-center">
-                        <p id="evaluation"></p>
-                    </div>
-                    <div class="col-12">
-                        <p id="pgn"></p>
-                        <!-- <p id="fen"></p> -->
-                    </div>
-                </div>
-                <p class="text-center"><a href="https://www.notion.so/Como-ensinar-um-computador-a-Jogar-Xadrez-bd7920e31ba144ac88a333ea234e6c73">Siga esse link se você quiser entender como esse algoritmo foi feito!</a></p>
+            </div>
+            <div class="col-md-6">
+                <h1 class="my-4">Atlas Chess</h1>
+                <p>Jogadas Analisadas: <span id="jogadas"></span></p>
+                <p>Jogadas Analisadas por segundo: <span id="speed"></span></p>
+                <p>Tempo médio de análise por jogada: <span id="analysysSpeed"></span></p>
+                <p>Avaliação: <span id="evaluation"></span></p>
+                <p>Profundidade: <span id="depth"></span></p>
+                <p>Status: <span id="status"></span></p>
             </div>
         </div>
     </div>

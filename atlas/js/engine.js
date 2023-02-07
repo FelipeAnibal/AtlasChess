@@ -1,10 +1,13 @@
 let  board = null;
 let  game = new Chess();
 let  $status = $('#status');
-let  $fen = $('#fen');
-let  $pgn = $('#pgn');
+// let  $fen = $('#fen');
+// let  $pgn = $('#pgn');
 let finalNodes = 0;
 let latestEval = 0;
+let speed = 0;
+let analysysSpeed = 0;
+let profundidade = 4;
 
 const piecesObject = {
     p: {
@@ -121,8 +124,10 @@ function onDrop (source, target) {
     if (move === null) return 'snapback';
     
     updateStatus();
-    document.getElementById("chat").innerHTML = 'Thinking...';
-    window.setTimeout(function(){computerMove(3, -Infinity, Infinity, false)}, 250);
+    // document.getElementById("chat").innerHTML = 'Thinking...';
+
+    
+    window.setTimeout(function(){computerMove(profundidade, -Infinity, Infinity, false)}, 250);
 }
 
 // update the board position after the piece snap
@@ -133,38 +138,43 @@ function updateBoard () {
 
 function updateStatus () {
     let  status = '';
-    document.getElementById("evaluation").innerHTML = "Current Evaluation: " + latestEval;
+    document.getElementById("evaluation").innerHTML = latestEval;
+    document.getElementById("jogadas").innerHTML = finalNodes;
+    document.getElementById("speed").innerHTML = Math.round(speed);
+    document.getElementById("analysysSpeed").innerHTML = Math.round(analysysSpeed*100000)/100000;
+    document.getElementById("depth").innerHTML = profundidade;
+
     
-    let  moveColor = 'White';
+    let  moveColor = 'brancas';
     if (game.turn() === 'b') {
-        moveColor = 'Black';
+        moveColor = 'pretas';
     }
     
     // checkmate?
     if (game.in_checkmate()) {
-        status = 'Game over, ' + moveColor + ' is in checkmate.';
-        alert('Game over, ' + moveColor + ' is in checkmate.');
+        status = 'Fim de Jogo, ' + moveColor + ' está em cheque-mate';
+        alert('Fim de Jogo, ' + moveColor + ' está em cheque-mate');
     }
     
     // draw?
     else if (game.in_draw()) {
-        status = 'Game over, drawn position';
-        alert('Game over, drawn position')
+        status = 'Empate.';
+        alert('Empate.')
     }
     
     // game still on
     else {
-      status = moveColor + ' to move';
+      status = 'Vez das peças ' + moveColor;
       
       // check?
       if (game.in_check()) {
-          status += ', ' + moveColor + ' is in check';
+          status += ', as peças ' + moveColor + ' estão em cheque';
         }
     }
 
     $status.html(status);
 
-    //$fen.html(game.fen());
+    // $fen.html(game.fen());
     // $pgn.html(game.pgn());
 }
 
@@ -189,7 +199,7 @@ $(window).on( "resize", board.resize );
 function computerMove(depth, alpha, beta, maximazingPlayer){
     finalNodes = 0;
 
-    document.getElementById("chat").innerHTML = "Your turn!";
+    // document.getElementById("chat").innerHTML = "Your turn!";
 
     let t0 = performance.now();
 
@@ -238,11 +248,18 @@ function computerMove(depth, alpha, beta, maximazingPlayer){
     
     game.make_move(bestMove);
 
-    var speed = finalNodes / ((t1 - t0)/1000);
+    speed = finalNodes / ((t1 - t0)/1000);
+    analysysSpeed = ((t1 - t0)/1000) / finalNodes;
     console.log((t1 - t0)/1000);
     console.log(finalNodes);
 
     console.log("Speed: " + Math.round(speed*100)/100 + " positions per second");
+
+    if (finalNodes < 3000)
+        profundidade++;
+    
+    if (finalNodes > 15000)
+        profundidade--;
 
     updateBoard();
     updateStatus();
@@ -261,7 +278,12 @@ function evaluatePosition(){
     // }
 
     //The threefold repetition reduces the speed of the evaluation function
-    if (game.in_draw() || game.in_stalemate()){
+    // if (game.in_draw() || game.in_stalemate()){
+    //     return 0;
+    // }
+
+    //The threefold repetition and game.in_draw reduce the speed of the evaluation function
+    if (game.in_draw()){
         return 0;
     }
 
